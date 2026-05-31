@@ -14,23 +14,24 @@ https://github.com/hugo-clemente/install_dossier/blob/main/INSTALL.md
 and follow it for my coding harness.
 ```
 
-The agent installs the skill, connects the MCP server, and tells you when to
-authorize in the browser. The runbook it follows is
-[`INSTALL.md`](INSTALL.md).
+The agent asks whether to install globally or just for this project, sets up the
+skill + MCP server, and has you restart once. On restart your browser opens
+automatically to sign in. The runbook it follows is [`INSTALL.md`](INSTALL.md).
 
 ## Install — by hand
 
 ```bash
-# 1. the skill
-npx skills add hugo-clemente/install_dossier --skill dossier-plan-review -a claude-code
+# 1. the skill   (-g = all projects; drop it for project-only)
+npx skills add hugo-clemente/install_dossier --skill dossier-plan-review -a claude-code -g
 
-# 2. the MCP server
-claude mcp add --transport http dossier https://energetic-toad-410.convex.site/mcp-node
+# 2. the MCP server, via mcp-remote (auto-runs OAuth on connect — no /mcp click)
+#    -s user = all projects; drop it for project-only
+claude mcp add dossier -s user -- npx -y mcp-remote https://energetic-toad-410.convex.site/mcp-node
 ```
 
 The skill + server load only at startup, so **restart your session** to pick them
-up (Claude Code: `/exit`, then `claude --continue` to keep context). Then open
-`/mcp`, pick `dossier`, and **Authenticate** — your browser opens once to sign in.
+up (Claude Code: `/exit`, then `claude --continue` to keep context). On restart
+`mcp-remote` opens your browser once to sign in — no manual `/mcp` step.
 
 ## What it does
 
